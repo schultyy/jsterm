@@ -28,6 +28,7 @@
   ],
   "devDependencies": {
     "electron-packager": "^3.3.0",
-    "electron-prebuilt": "^0.25.2"
+    "electron-prebuilt": "^0.25.2",
+    "typescript": "^1.5.0-beta"
   }
 }
