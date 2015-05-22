@@ -15,7 +15,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "prestart": "tsc src/**/*.ts --target es6",
+    "prestart": "tsc src/**/*.ts --target es6 --module commonjs",
     "start": "electron src/",
     "build": "electron-packager . $npm_package_productName --prune --asar --ignore=node_modules/electron-prebuilt --ignore=node_modules/electron-packager --ignore=.git"
   },
@@ -36,6 +36,8 @@
   "dependencies": {
     "backbone": "^1.2.0",
     "bootstrap": "^3.3.4",
-    "jquery": "^2.1.4"
+    "jquery": "^2.1.4",
+    "requirejs": "^2.1.17",
+    "underscore": "^1.8.3"
   }
 }
