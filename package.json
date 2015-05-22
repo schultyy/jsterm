@@ -1,0 +1,33 @@
+{
+  "name": "jsterm",
+  "productName": "Jsterm",
+  "version": "0.0.0",
+  "description": "My prime app",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": "schultyy/jsterm",
+  "author": {
+    "name": "Jan Schulte",
+    "email": "hello@unexpected-co.de",
+    "url": "github.com/schultyy/jsterm"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . $npm_package_productName --prune --asar --ignore=node_modules/electron-prebuilt --ignore=node_modules/electron-packager --ignore=.git"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app"
+  ],
+  "devDependencies": {
+    "electron-packager": "^3.3.0",
+    "electron-prebuilt": "^0.25.2"
+  }
+}
