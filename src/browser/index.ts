@@ -8,6 +8,10 @@ interface Window { $: JQueryStatic; Backbone: any; }
 window.$ = require("jquery");
 window.Backbone = require("backbone");
 
+class HistoryList extends Backbone.Collection<HistoryEntry> {
+
+}
+
 class HistoryEntry extends Backbone.Model {
   defaults() {
     return {
@@ -35,22 +39,35 @@ class CommandEntry extends Backbone.Model {
 }
 
 class MainView extends Backbone.View<any> {
+  history = new HistoryList();
+  commandView: any;
+  commandModel: CommandEntry;
   constructor () {
 		super();
     this.setElement($('#terminal'), true);
-    var cmdModel = new CommandEntry();
-    var cmd = new CommandEntryView({
-      model: cmdModel
-    });
-    cmdModel.on("change", this.onCommand);
-    cmd.render();
-    this.$el.append(cmd.$el);
+    this.commandModel = new CommandEntry();
+
+    this.commandModel.on("change", this.onCommand);
+    _.bindAll(this, 'onCommand');
+
+    this.render();
   }
   render() {
+    var cmd = new CommandEntryView({
+      model: this.commandModel
+    });
+    cmd.render();
+    this.$el.append(cmd.$el);
+    cmd.$el.focus();
     return this;
   }
-  onCommand(ev: any) {
-    console.log(ev);
+  onCommand(ev: CommandEntry) {
+    var model = new HistoryEntry({
+      'content': ev.get('content')
+    });
+    $("#history").append(new HistoryEntryView({
+      model: model
+    }).render().$el);
   }
 }
 
@@ -74,11 +91,22 @@ class CommandEntryView extends Backbone.View<CommandEntry>{
     if(ev.keyCode == 13) {
       console.log(this.$el.val());
       this.model.set('content', this.$el.val());
+      this.$el.val('');
+      this.$el.focus();
     }
   }
 }
 
-class HistoryEntryView extends Backbone.View<HistoryEntry> {}
+class HistoryEntryView extends Backbone.View<HistoryEntry> {
+  constructor(args?) {
+    super(args);
+    this.tagName = 'li';
+  }
+  render() {
+    this.$el.html(this.model.get('content'));
+    return this;
+  }
+}
 
 $(() => {
   new MainView();
