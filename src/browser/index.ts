@@ -42,27 +42,39 @@ class MainView extends Backbone.View<any> {
     var cmd = new CommandEntryView({
       model: cmdModel
     });
+    cmdModel.on("change", this.onCommand);
     cmd.render();
     this.$el.append(cmd.$el);
   }
   render() {
     return this;
   }
+  onCommand(ev: any) {
+    console.log(ev);
+  }
 }
 
 class CommandEntryView extends Backbone.View<CommandEntry>{
   model: CommandEntry;
-  constructor(options? ) {
+  constructor(options?) {
     this.tagName = 'input';
     this.className = 'command';
-    this.events = <any>{};
+    this.events = <any>{
+      'keydown': 'commandSubmit'
+    };
     super(options);
-    _.bindAll(this, 'render');
+    _.bindAll(this, 'render', 'commandSubmit');
   }
   render() {
     this.$el.select();
     this.$el.focus();
     return this;
+  }
+  commandSubmit(ev: KeyboardEvent) {
+    if(ev.keyCode == 13) {
+      console.log(this.$el.val());
+      this.model.set('content', this.$el.val());
+    }
   }
 }
 
