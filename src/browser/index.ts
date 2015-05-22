@@ -54,14 +54,13 @@ class CommandEntryView extends Backbone.View<CommandEntry>{
   model: CommandEntry;
   constructor(options? ) {
     this.tagName = 'input';
+    this.className = 'command';
     this.events = <any>{};
     super(options);
     _.bindAll(this, 'render');
-    this.model.bind('change', this.render);
   }
   render() {
-    var input = $('<input>');
-    this.$el.append(input);
+    this.$el.select();
     this.$el.focus();
     return this;
   }
