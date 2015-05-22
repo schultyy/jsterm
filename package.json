@@ -15,6 +15,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "prestart": "tsc *.ts --target es6",
     "start": "electron .",
     "build": "electron-packager . $npm_package_productName --prune --asar --ignore=node_modules/electron-prebuilt --ignore=node_modules/electron-packager --ignore=.git"
   },
@@ -29,6 +30,7 @@
   "devDependencies": {
     "electron-packager": "^3.3.0",
     "electron-prebuilt": "^0.25.2",
-    "typescript": "^1.5.0-beta"
+    "typescript": "^1.4",
+    "tsd": "^0.6.0"
   }
 }
