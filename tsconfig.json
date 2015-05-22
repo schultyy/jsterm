@@ -15,8 +15,8 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
-        "./index.ts",
-        "./typings/github-electron/github-electron.d.ts",
-        "./typings/node/node.d.ts"
+        "./src/index.ts",
+        "./src/typings/github-electron/github-electron.d.ts",
+        "./src/typings/node/node.d.ts"
     ]
 }
