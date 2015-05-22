@@ -1,7 +1,7 @@
 {
-    "version": "1.5.0-alpha",
+    "version": "1.4.1",
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "commonjs",
         "declaration": false,
         "noImplicitAny": false,
@@ -15,8 +15,13 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
+        "./src/browser/index.ts",
         "./src/index.ts",
-        "./src/typings/github-electron/github-electron.d.ts",
-        "./src/typings/node/node.d.ts"
+        "./typings/backbone/backbone.d.ts",
+        "./typings/github-electron/github-electron.d.ts",
+        "./typings/jquery/jquery.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/tsd.d.ts",
+        "./typings/underscore/underscore.d.ts"
     ]
 }
