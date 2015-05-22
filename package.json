@@ -2,7 +2,7 @@
   "name": "jsterm",
   "productName": "Jsterm",
   "version": "0.0.0",
-  "description": "My prime app",
+  "description": "JS Terminal Emulator",
   "license": "MIT",
   "main": "index.js",
   "repository": "schultyy/jsterm",
@@ -32,5 +32,8 @@
     "electron-prebuilt": "^0.25.2",
     "typescript": "^1.4",
     "tsd": "^0.6.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.4"
   }
 }
