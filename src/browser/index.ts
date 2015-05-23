@@ -3,10 +3,11 @@
 ///<reference path="../../typings/requirejs/require.d.ts" />
 'use strict';
 
-interface Window { $: JQueryStatic; Backbone: any; }
+interface Window { $: JQueryStatic; Backbone: any; ipc: any; }
 
 window.$ = require("jquery");
 window.Backbone = require("backbone");
+window.ipc = require('ipc');
 
 class HistoryList extends Backbone.Collection<HistoryEntry> {
 
@@ -68,6 +69,7 @@ class MainView extends Backbone.View<any> {
     $("#history").append(new HistoryEntryView({
       model: model
     }).render().$el);
+    window.ipc.sendSync("command-sent", model.get("content"));
   }
 }
 

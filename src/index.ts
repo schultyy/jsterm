@@ -4,12 +4,17 @@
 'use strict';
 const app = require('app');
 const BrowserWindow = require('browser-window');
+const ipc = require("ipc");
 
 // report crashes to the Electron project
 require('crash-reporter').start();
 
 // prevent window being GC'd
 let mainWindow = null;
+
+ipc.on("command-sent", function (event: Object, arg: string) {
+	console.log("ARGUMENT " + arg);
+});
 
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
