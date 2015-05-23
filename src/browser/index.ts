@@ -93,8 +93,8 @@ class CommandEntryView extends Backbone.View<CommandEntry>{
     return this;
   }
   commandSubmit(ev: KeyboardEvent) {
-    if(ev.keyCode == 13) {
-      console.log(this.$el.val());
+    if(ev.keyCode == 13 && this.$el.val() !== '') {
+
       this.model.set('content', this.$el.val());
       this.$el.val('');
       this.$el.focus();
