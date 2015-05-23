@@ -12,8 +12,9 @@ require('crash-reporter').start();
 // prevent window being GC'd
 let mainWindow = null;
 
-ipc.on("command-sent", function (event: Object, arg: string) {
+ipc.on("execute-command", function (event: any, arg: string) {
 	console.log("ARGUMENT " + arg);
+	event.sender.send('command-results', arg);
 });
 
 app.on('window-all-closed', function () {
