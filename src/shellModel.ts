@@ -2,9 +2,9 @@ const ipc = require("ipc");
 
 export class ShellModel {
   constructor() {
-    ipc.on("execute-command", function(event: any, arg: string){
+    ipc.on("execute-command", function(ev: any, arg: string){
       console.log("arg " + arg);
-      event.sender.send('command-results', arg);
+      ev.sender.send('command-results', arg);
     });
   }
 }

@@ -5,7 +5,7 @@
 const app = require('app');
 const BrowserWindow = require('browser-window');
 const ipc = require("ipc");
-import shellModel = require("./shellModel");
+import shellModule = require("./shellModel");
 
 // report crashes to the Electron project
 require('crash-reporter').start();
@@ -26,7 +26,7 @@ app.on('ready', function () {
 		height: 768,
 		resizable: true
 	});
-	shell = new shellModel.ShellModel();
+	shell = new shellModule.ShellModel();
 	mainWindow.openDevTools();
 	mainWindow.loadUrl(`file://${__dirname}/../static/index.html`);
 

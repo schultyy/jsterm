@@ -71,6 +71,7 @@ class MainView extends Backbone.View<any> {
     }).render().$el);
     window.ipc.on('command-results', function(arg) {
       console.log(arg); // prints "pong"
+      alert(arg);
     });
     window.ipc.send('execute-command', model.get("content"));
   }
