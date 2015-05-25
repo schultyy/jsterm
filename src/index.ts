@@ -27,6 +27,7 @@ app.on('ready', function () {
 		resizable: true
 	});
 	shell = new shellModule.ShellModel();
+	shell.registerCallback();
 	mainWindow.openDevTools();
 	mainWindow.loadUrl(`file://${__dirname}/../static/index.html`);
 

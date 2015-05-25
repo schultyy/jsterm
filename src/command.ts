@@ -2,19 +2,17 @@
 import fs = require('fs');
 import env = require("./environment");
 
-module Commands {
-  interface Command {
-    canHandle(commandName: string): boolean;
-    execute(env: env.Environment, argumentList: Array<string>): any;
+export interface Command {
+  canHandle(commandName: string): boolean;
+  execute(env: env.Environment, argumentList: Array<string>): any;
+}
+
+export class Ls implements Command {
+  canHandle(commandName: string) {
+    return commandName === 'ls';
   }
 
-  class Ls implements Command {
-    canHandle(commandName: string) {
-      return commandName === 'ls';
-    }
-
-    execute(env: env.Environment, argumentList: Array<string>) {
-      return fs.readdirSync(env.workingDirectory);
-    }
+  execute(env: env.Environment, argumentList: Array<string>) {
+    return fs.readdirSync(env.workingDirectory);
   }
 }
