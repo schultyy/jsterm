@@ -16,6 +16,8 @@
     ],
     "files": [
         "./src/browser/index.ts",
+        "./src/command.ts",
+        "./src/environment.ts",
         "./src/index.ts",
         "./src/shellModel.ts",
         "./typings/backbone/backbone.d.ts",
