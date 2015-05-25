@@ -3,7 +3,7 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "declaration": false,
+        "declaration": true,
         "noImplicitAny": false,
         "removeComments": true,
         "noLib": false,
@@ -15,12 +15,17 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
+        "./src/browser/index.d.ts",
         "./src/browser/index.ts",
+        "./src/index.d.ts",
         "./src/index.ts",
+        "./src/shellModel.d.ts",
+        "./src/shellModel.ts",
         "./typings/backbone/backbone.d.ts",
         "./typings/github-electron/github-electron.d.ts",
         "./typings/jquery/jquery.d.ts",
         "./typings/node/node.d.ts",
+        "./typings/requirejs/require.d.ts",
         "./typings/tsd.d.ts",
         "./typings/underscore/underscore.d.ts"
     ]
