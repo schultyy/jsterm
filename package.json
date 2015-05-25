@@ -20,9 +20,10 @@
     "build": "electron-packager . $npm_package_productName --prune --asar --ignore=node_modules/electron-prebuilt --ignore=node_modules/electron-packager --ignore=.git"
   },
   "files": [
-    "index.js",
-    "index.html",
-    "index.css"
+    "src/index.js",
+    "static/index.html",
+    "static/index.css",
+    "src/browser/index.js"
   ],
   "keywords": [
     "electron-app"
