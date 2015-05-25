@@ -69,9 +69,8 @@ class MainView extends Backbone.View<any> {
     $("#history").append(new HistoryEntryView({
       model: model
     }).render().$el);
-    window.ipc.on('command-results', function(arg) {
-      console.log(arg); // prints "pong"
-      alert(arg);
+    window.ipc.on('command-results', function(arg: any) {
+      console.log(arg.toString()); // prints "pong"
     });
     window.ipc.send('execute-command', model.get("content"));
   }

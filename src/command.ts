@@ -7,6 +7,15 @@ export interface Command {
   execute(env: env.Environment, argumentList: Array<string>): any;
 }
 
+export class NullCommand implements Command {
+  canHandle(commandName: string) {
+    return false;
+  }
+  execute(env: env.Environment, argumentList: Array<string>){
+
+  }
+}
+
 export class Ls implements Command {
   canHandle(commandName: string) {
     return commandName === 'ls';
