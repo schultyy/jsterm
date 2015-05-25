@@ -12,7 +12,7 @@
     "url": "github.com/schultyy/jsterm"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "iojs": ">=2.0"
   },
   "scripts": {
     "prestart": "tsc src/**/*.ts --target es5 --module commonjs",
