@@ -8,8 +8,7 @@
         "removeComments": true,
         "noLib": false,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noEmitOnError": true
+        "suppressImplicitAnyIndexErrors": true
     },
     "filesGlob": [
         "./**/*.ts",
@@ -18,6 +17,7 @@
     "files": [
         "./src/browser/index.ts",
         "./src/command.ts",
+        "./src/commandparser.ts",
         "./src/environment.ts",
         "./src/index.ts",
         "./src/shellModel.ts",
