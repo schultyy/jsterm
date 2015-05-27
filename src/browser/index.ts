@@ -52,6 +52,28 @@ class MainView extends Backbone.View<any> {
     _.bindAll(this, 'onCommand');
 
     this.render();
+    this.registerCallback();
+  }
+  registerCallback() {
+    window.ipc.on('command-results', (arg: any) => {
+      if(arg instanceof Array) {
+        arg.forEach((elem: string) => {
+          var model = new HistoryEntry({
+            'content': elem
+          });
+          $("#history").append(new HistoryEntryView({
+            model: model
+          }).render().$el);
+        });
+      }else {
+        var model = new HistoryEntry({
+          'content': arg
+        });
+        $("#history").append(new HistoryEntryView({
+          model: model
+        }).render().$el);
+      }
+    });
   }
   render() {
     var cmd = new CommandEntryView({
@@ -69,16 +91,6 @@ class MainView extends Backbone.View<any> {
     $("#history").append(new HistoryEntryView({
       model: model
     }).render().$el);
-    window.ipc.on('command-results', (arg: any) => {
-      arg.forEach((elem: string) => {
-        var model = new HistoryEntry({
-          'content': elem
-        });
-        $("#history").append(new HistoryEntryView({
-          model: model
-        }).render().$el);
-      });
-    });
     window.ipc.send('execute-command', model.get("content"));
   }
 }

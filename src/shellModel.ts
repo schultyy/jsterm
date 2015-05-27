@@ -2,6 +2,7 @@
 var ipc = require("ipc");
 import command = require("./command");
 import environment = require("./environment");
+import parser = require('./commandparser');
 
 export class ShellModel {
   commands: Array<command.Command>;
@@ -10,11 +11,19 @@ export class ShellModel {
     this.env = new environment.Environment(workingDirectory);
     this.commands = new Array<command.Command>();
     this.commands.push(new command.Ls());
+    this.commands.push(new command.Pwd());
+    this.commands.push(new command.Cd());
   }
   registerCallback() {
+    console.log("registering callback");
     ipc.on("execute-command", (ev: any, arg: string) => {
-      var cmd = this.resolve(arg);
-      var results = cmd.execute(this.env, []);
+      console.log("parsed command");
+      var parsedCommand = parser.parse(arg);
+      console.log("parsed", parsedCommand);
+      var commandName = parsedCommand.shift();
+      var cmd = this.resolve(commandName);
+
+      var results = cmd.execute(this.env, parsedCommand);
       ev.sender.send('command-results', results);
     });
   }
