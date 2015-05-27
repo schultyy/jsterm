@@ -1,5 +1,5 @@
 ///<reference path="command.ts" />
-const ipc = require("ipc");
+var ipc = require("ipc");
 import command = require("./command");
 import environment = require("./environment");
 

@@ -2,10 +2,10 @@
 ///<reference path="../typings/node/node.d.ts" />
 
 'use strict';
-const app = require('app');
-const BrowserWindow = require('browser-window');
-const ipc = require("ipc");
-const process = require("process");
+var app = require('app');
+var BrowserWindow = require('browser-window');
+var ipc = require("ipc");
+var process = require("process");
 import shellModule = require("./shellModel");
 
 function getUserHome(): string {
@@ -16,8 +16,8 @@ function getUserHome(): string {
 require('crash-reporter').start();
 
 // prevent window being GC'd
-let mainWindow = null;
-let shell = null;
+var mainWindow = null;
+var shell = null;
 
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
