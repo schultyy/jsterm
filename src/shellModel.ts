@@ -1,4 +1,6 @@
 ///<reference path="command.ts" />
+///<reference path="environment.ts" />
+
 var ipc = require("ipc");
 import command = require("./command");
 import environment = require("./environment");
