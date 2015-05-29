@@ -1,5 +1,6 @@
 ///<reference path="command.ts" />
 ///<reference path="environment.ts" />
+'use strict';
 
 var ipc = require("ipc");
 import command = require("./command");
@@ -19,9 +20,7 @@ export class ShellModel {
   registerCallback() {
     console.log("registering callback");
     ipc.on("execute-command", (ev: any, arg: string) => {
-      console.log("parsed command");
       var parsedCommand = parser.parse(arg);
-      console.log("parsed", parsedCommand);
       var commandName = parsedCommand.shift();
       var cmd = this.resolve(commandName);
 
