@@ -1,4 +1,5 @@
 /// <reference path="../typings/node/node.d.ts" />
+'use strict';
 import fs = require('fs');
 import path = require('path');
 import env = require("./environment");
@@ -42,13 +43,11 @@ export class Cd implements Command {
   }
 
   execute(environment: env.Environment, argumentList: Array<string>) {
-    console.log("cd");
     if(argumentList.length === 0) {
       return environment;
     }
     var newFolder = argumentList[0];
     var newPath = path.join(environment.workingDirectory, newFolder);
-    console.log("newPath", newPath);
     if(fs.exists(newPath)){
       return new env.Environment(newPath);
     }
