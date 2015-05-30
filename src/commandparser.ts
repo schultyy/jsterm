@@ -3,5 +3,5 @@ export function parse(argumentList: string): Array<string> {
   if (splitted.length === 1){
     return splitted;
   }
-  return [];
+  return splitted;
 }

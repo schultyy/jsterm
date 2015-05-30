@@ -48,7 +48,7 @@ export class Cd implements Command {
     }
     var newFolder = argumentList[0];
     var newPath = path.join(environment.workingDirectory, newFolder);
-    if(fs.exists(newPath)){
+    if(fs.existsSync(newPath)){
       return new env.Environment(newPath);
     }
     return environment;

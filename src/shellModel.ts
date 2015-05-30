@@ -18,13 +18,14 @@ export class ShellModel {
     this.commands.push(new command.Cd());
   }
   registerCallback() {
-    console.log("registering callback");
     ipc.on("execute-command", (ev: any, arg: string) => {
       var parsedCommand = parser.parse(arg);
       var commandName = parsedCommand.shift();
       var cmd = this.resolve(commandName);
-
-      var results = cmd.execute(this.env, parsedCommand);
+      var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
+      if(results.workingDirectory) {
+        this.env = results;
+      }
       ev.sender.send('command-results', results);
     });
   }
