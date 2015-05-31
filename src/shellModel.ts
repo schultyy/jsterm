@@ -22,11 +22,15 @@ export class ShellModel {
       var parsedCommand = parser.parse(arg);
       var commandName = parsedCommand.shift();
       var cmd = this.resolve(commandName);
-      var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
-      if(results.workingDirectory) {
-        this.env = results;
+      if(cmd === null) {
+        ev.sender.send('command-results', 'invalid command ' + commandName);
+      } else {
+        var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
+        if(results.workingDirectory) {
+          this.env = results;
+        }
+        ev.sender.send('command-results', results);
       }
-      ev.sender.send('command-results', results);
     });
   }
   resolve(cmdName: string): command.Command {
@@ -35,6 +39,6 @@ export class ShellModel {
         return this.commands[i];
       }
     }
-    return new command.NullCommand();
+    return null;
   }
 }
