@@ -47,10 +47,24 @@ export class Cd implements Command {
       return environment;
     }
     var newFolder = argumentList[0];
+    if(newFolder === "..") {
+      return this.navigateBack(environment);
+    }
     var newPath = path.join(environment.workingDirectory, newFolder);
     if(fs.existsSync(newPath)){
       return new env.Environment(newPath);
     }
     return environment;
+  }
+
+  private navigateBack(environment: env.Environment) {
+    var newPath = this.pathByRemovingLastComponent(environment.workingDirectory);
+    if(fs.existsSync(newPath)){
+      return new env.Environment(newPath);
+    }
+  }
+
+  private pathByRemovingLastComponent(path: string): string {
+    return path.substring(0, path.lastIndexOf("/"));
   }
 }
