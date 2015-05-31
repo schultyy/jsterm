@@ -54,6 +54,9 @@ export class Cd implements Command {
     if(fs.existsSync(newPath)){
       return new env.Environment(newPath);
     }
+    else if(fs.existsSync(newFolder)) {
+      return new env.Environment(newFolder);
+    }
     return environment;
   }
 
