@@ -9,6 +9,12 @@
 $ npm install
 ```
 
+You also need `tsd`:
+
+```
+$ npm install tsd
+```
+
 ### Run
 
 ```
