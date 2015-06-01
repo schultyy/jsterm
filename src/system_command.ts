@@ -1,5 +1,8 @@
 ///<reference path="../typings/node/node.d.ts" />
+/// <reference path="./environment"/>
+
 import child_process = require("child_process");
+import environment = require("./environment");
 
 export interface Callbacks {
   stdout?: (data: string) => void;
@@ -7,8 +10,11 @@ export interface Callbacks {
   close?: (data: string) => void;
 }
 
-export function execute(command: string, options: Array<string>, callbacks: Callbacks) {
-    var process = child_process.spawn(command, options);
+export function execute(command: string, options: Array<string>,
+                        env: environment.Environment, callbacks: Callbacks) {
+    var process = child_process.spawn(command, options, {
+      cwd: env.workingDirectory
+    });
     if(callbacks.stdout){
       process.stdout.on('data', callbacks.stdout);
     }

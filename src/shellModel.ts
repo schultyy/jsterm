@@ -26,7 +26,7 @@ export class ShellModel {
     var commandName = parsedCommand.shift();
     var cmd = this.resolve(commandName);
     if(cmd === null) {
-      syscommand.execute(commandName, parsedCommand, {
+      syscommand.execute(commandName, parsedCommand, this.env, {
         stdout: function(data: string) {
           event.sender.send('command-results', data.toString());
         },stderr: function(data: string) {
