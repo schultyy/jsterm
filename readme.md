@@ -1,6 +1,6 @@
 # jsterm
 
-> My prime app
+This provides basic Terminal operations in a terminal app written in Typescript. It uses Atom's electron to provide a basic graphical user interface.
 
 
 ## Dev
