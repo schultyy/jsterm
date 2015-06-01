@@ -6,6 +6,7 @@ var ipc = require("ipc");
 import command = require("./command");
 import environment = require("./environment");
 import parser = require('./commandparser');
+import syscommand = require('./system_command');
 
 export class ShellModel {
   commands: Array<command.Command>;
@@ -18,20 +19,27 @@ export class ShellModel {
     this.commands.push(new command.Cd());
   }
   registerCallback() {
-    ipc.on("execute-command", (ev: any, arg: string) => {
-      var parsedCommand = parser.parse(arg);
-      var commandName = parsedCommand.shift();
-      var cmd = this.resolve(commandName);
-      if(cmd === null) {
-        ev.sender.send('command-results', 'invalid command ' + commandName);
-      } else {
-        var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
-        if(results.workingDirectory) {
-          this.env = results;
+    ipc.on("execute-command", (event: any, arg: string) => { this.execute(event, arg); });
+  }
+  execute(event: any, arg: string) {
+    var parsedCommand = parser.parse(arg);
+    var commandName = parsedCommand.shift();
+    var cmd = this.resolve(commandName);
+    if(cmd === null) {
+      syscommand.execute(commandName, parsedCommand, {
+        stdout: function(data: string) {
+          event.sender.send('command-results', data.toString());
+        },stderr: function(data: string) {
+          event.sender.send('command-results', data.toString());
         }
-        ev.sender.send('command-results', results);
+      });
+    } else {
+      var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
+      if(results.workingDirectory) {
+        this.env = results;
       }
-    });
+      event.sender.send('command-results', results);
+    }
   }
   resolve(cmdName: string): command.Command {
     for(var i = 0; i < this.commands.length; i++) {
