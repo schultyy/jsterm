@@ -3,6 +3,7 @@
 import fs = require('fs');
 import path = require('path');
 import env = require("./environment");
+import process = require("process");
 
 export interface Command {
   canHandle(commandName: string): boolean;
@@ -82,5 +83,15 @@ export class Cd implements Command {
 
   private pathByRemovingLastComponent(path: string): string {
     return path.substring(0, path.lastIndexOf("/"));
+  }
+}
+
+export class Exit implements Command {
+  canHandle(commandName: string) {
+    return commandName === 'exit';
+  }
+
+  execute(environment: env.Environment, argumentList: Array<string>) {
+    process.exit();
   }
 }
