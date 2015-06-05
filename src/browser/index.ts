@@ -123,11 +123,14 @@ class CommandEntryView extends Backbone.View<CommandEntry>{
 
 class HistoryEntryView extends Backbone.View<HistoryEntry> {
   constructor(args?) {
-    super(args);
     this.tagName = 'li';
+    this.className = 'historyEntry';
+    super(args);
   }
   render() {
-    this.$el.html(this.model.get('content'));
+    var pre = $("<pre>");
+    pre.text(this.model.get("content").toString());
+    this.$el.html(pre.html());
     return this;
   }
 }

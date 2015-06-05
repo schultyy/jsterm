@@ -29,5 +29,10 @@ textarea:focus, input:focus{
     outline: 0;
 }
 
+#terminal .historyEntry {
+	display: block;
+	white-space: pre;
+}
+
 #terminal command {
 }

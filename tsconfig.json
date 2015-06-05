@@ -21,6 +21,7 @@
         "./src/environment.ts",
         "./src/index.ts",
         "./src/shellModel.ts",
+        "./src/system_command.ts",
         "./typings/backbone/backbone.d.ts",
         "./typings/github-electron/github-electron.d.ts",
         "./typings/jquery/jquery.d.ts",
