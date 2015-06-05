@@ -24,7 +24,12 @@ export class Ls implements Command {
   }
 
   execute(env: env.Environment, argumentList: Array<string>) {
-    return fs.readdirSync(env.workingDirectory);
+    return fs.readdirSync(env.workingDirectory).map(function(file) {
+      if((/(^|.\/)\.+[^\/\.]/g).test(file)){
+        return null;
+      }
+      return file;
+    });
   }
 }
 
