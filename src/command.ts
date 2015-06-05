@@ -24,11 +24,19 @@ export class Ls implements Command {
   }
 
   execute(env: env.Environment, argumentList: Array<string>) {
-    return fs.readdirSync(env.workingDirectory).map(function(file) {
-      if((/(^|.\/)\.+[^\/\.]/g).test(file)){
-        return null;
-      }
-      return file;
+    var files = fs.readdirSync(env.workingDirectory);
+    if(argumentList.indexOf('-a') == -1) {
+      return this.filterHiddenFiles(files);
+    }
+    return files;
+  }
+
+  private filterHiddenFiles(files: Array<string>) {
+    return files.map(function(file) {
+        if((/(^|.\/)\.+[^\/\.]/g).test(file)){
+          return null;
+        }
+        return file;
     });
   }
 }
