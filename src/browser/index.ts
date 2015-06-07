@@ -47,4 +47,7 @@ function scrollToBottom() {
 $(() => {
   initialize();
   registerCallbacks();
+  $('#history').click(function(){
+    $(".command").focus();
+  });
 });
