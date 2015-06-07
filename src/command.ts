@@ -75,10 +75,12 @@ export class Cd extends BaseCommand implements Command {
   execute(environment: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
     if(argumentList.length === 0) {
       finished(environment);
+      return;
     }
     var newFolder = argumentList[0];
     if(newFolder === "..") {
       finished(this.navigateBack(environment));
+      return;
     }
     var newPath = path.join(environment.workingDirectory, newFolder);
     if(fs.existsSync(newPath)){
@@ -87,7 +89,9 @@ export class Cd extends BaseCommand implements Command {
     else if(fs.existsSync(newFolder)) {
       finished(new env.Environment(newFolder));
     }
-    finished(environment);
+    else {
+      finished(environment);
+    }
   }
 
   private navigateBack(environment: env.Environment) {
