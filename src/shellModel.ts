@@ -26,21 +26,22 @@ export class ShellModel {
     var parsedCommand = parser.parse(arg);
     var commandName = parsedCommand.shift();
     var cmdClass = this.resolve(commandName);
-    var cmd = new cmdClass();
-    if(cmd === null) {
+    var stdout = function(data: string){
+      event.sender.send('command-results', data.toString());
+    };
+    var stderr = function(data: string) {
+      event.sender.send('command-results', data.toString());
+    };
+    if(cmdClass === null) {
       syscommand.execute(commandName, parsedCommand, this.env, {
-        stdout: function(data: string) {
-          event.sender.send('command-results', data.toString());
-        },stderr: function(data: string) {
-          event.sender.send('command-results', data.toString());
-        }
+        stdout: stdout,
+        stderr: stderr
       });
     } else {
-      var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
-      if(results.workingDirectory) {
-        this.env = results;
-      }
-      event.sender.send('command-results', results);
+      var cmd = new cmdClass(stdout, stderr);
+      cmd.execute(this.env, parsedCommand, (workingDirectory) =>{
+        this.env = workingDirectory;
+      });
     }
   }
   resolve(cmdName: string) {

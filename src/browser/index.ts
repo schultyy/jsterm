@@ -66,7 +66,7 @@ class MainView extends Backbone.View<any> {
         });
       }else {
         var model = new HistoryEntry({
-          'content': arg
+          'content': arg.toString()
         });
         $("#history").append(new HistoryEntryView({
           model: model
