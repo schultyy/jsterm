@@ -33,6 +33,7 @@
     "electron-prebuilt": "^0.25.2",
     "grunt": "^0.4.5",
     "grunt-ts": "^4.1",
+    "promise": "^7.0.1",
     "tsd": "^0.6.0",
     "typescript": "^1.4"
   },
