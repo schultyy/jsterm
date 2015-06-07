@@ -1,17 +1,17 @@
 module.exports = function (grunt) {
 
   // Import dependencies
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-ts');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    typescript: {
+    ts: {
       lib: { // <-- compile all the files in ../ to PROJECT.js
         src: ['src/*.ts', 'src/browser/*.ts'],
         options: {
           module: 'commonjs',
           target: 'es5',
-          sourceMaps: false,
+          sourceMap: false,
           declaration: false,
           removeComments: false
         }
@@ -20,5 +20,5 @@ module.exports = function (grunt) {
   });
 
   // Register the default tasks to run when you run grunt
-  grunt.registerTask('default', ['typescript']);
+  grunt.registerTask('default', ['ts']);
 }
