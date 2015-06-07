@@ -15,7 +15,7 @@
     "iojs": ">=2.0"
   },
   "scripts": {
-    "prestart": "rm -rf src/**/*.js && tsc src/**/*.ts --target es5 --module commonjs",
+    "prestart": "start.sh",
     "start": "electron src/",
     "build": "electron-packager . $npm_package_productName --prune --asar --ignore=node_modules/electron-prebuilt --ignore=node_modules/electron-packager --ignore=.git"
   },
