@@ -12,6 +12,7 @@ function sendCommand(ev: KeyboardEvent) {
     $(".command").val('').focus();
     historyEntry(command);
     window.ipc.send('execute-command', command);
+    scrollToBottom();
   }
 }
 
@@ -39,7 +40,12 @@ function registerCallbacks() : void {
       }else {
         historyEntry(arg);
       }
+      scrollToBottom();
     });
+}
+
+function scrollToBottom() {
+  $('html, body').animate({scrollTop: $(".command").offset().top}, 0);
 }
 
 $(() => {
