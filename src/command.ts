@@ -26,19 +26,25 @@ export class Ls extends BaseCommand implements Command {
 
   execute(env: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
     var files = fs.readdirSync(env.workingDirectory);
-    if(argumentList.indexOf('-a') == -1) {
-      this.filterHiddenFiles(files).forEach((file) => {
-        if(file === null) return;
-        this.stdout(file.toString());
-      });
-    }
-    else {
-      files.forEach((file) => {
-        this.stdout(file.toString());
-      });
-    }
+    fs.readdir(env.workingDirectory, (err, files) => {
+      if(err) {
+        this.stderr(err.message);
+        return;
+      }
+      if(argumentList.indexOf('-a') == -1) {
+        this.filterHiddenFiles(files).forEach((file) => {
+          if(file === null) return;
+          this.stdout(file.toString());
+        });
+      }
+      else {
+        files.forEach((file) => {
+          this.stdout(file.toString());
+        });
+      }
 
-    finished(env);
+      finished(env);
+    });
   }
 
   private filterHiddenFiles(files: Array<string>) {
