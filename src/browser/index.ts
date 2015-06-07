@@ -1,6 +1,5 @@
 ///<reference path="../../typings/jquery/jquery.d.ts" />
 ///<reference path="../../typings/backbone/backbone.d.ts" />
-///<reference path="../../typings/requirejs/require.d.ts" />
 'use strict';
 
 interface Window { $: JQueryStatic; Backbone: any; ipc: any; }

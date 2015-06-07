@@ -3,7 +3,7 @@
 import fs = require('fs');
 import path = require('path');
 import env = require("./environment");
-import process = require("process");
+//import process = require("process");
 
 export interface Command {
   canHandle(commandName: string): boolean;
