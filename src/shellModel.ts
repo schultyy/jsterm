@@ -9,15 +9,15 @@ import parser = require('./commandparser');
 import syscommand = require('./system_command');
 
 export class ShellModel {
-  commands: Array<command.Command>;
+  commands: Array<any>;
   env: environment.Environment;
   constructor(workingDirectory: string) {
     this.env = new environment.Environment(workingDirectory);
-    this.commands = new Array<command.Command>();
-    this.commands.push(new command.Ls());
-    this.commands.push(new command.Pwd());
-    this.commands.push(new command.Cd());
-    this.commands.push(new command.Exit());
+    this.commands = new Array<any>();
+    this.commands.push(command.Ls);
+    this.commands.push(command.Pwd);
+    this.commands.push(command.Cd);
+    this.commands.push(command.Exit);
   }
   registerCallback() {
     ipc.on("execute-command", (event: any, arg: string) => { this.execute(event, arg); });
@@ -25,7 +25,8 @@ export class ShellModel {
   execute(event: any, arg: string) {
     var parsedCommand = parser.parse(arg);
     var commandName = parsedCommand.shift();
-    var cmd = this.resolve(commandName);
+    var cmdClass = this.resolve(commandName);
+    var cmd = new cmdClass();
     if(cmd === null) {
       syscommand.execute(commandName, parsedCommand, this.env, {
         stdout: function(data: string) {
@@ -42,7 +43,7 @@ export class ShellModel {
       event.sender.send('command-results', results);
     }
   }
-  resolve(cmdName: string): command.Command {
+  resolve(cmdName: string) {
     for(var i = 0; i < this.commands.length; i++) {
       if(this.commands[i].canHandle(cmdName)){
         return this.commands[i];

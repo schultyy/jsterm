@@ -6,12 +6,11 @@ import env = require("./environment");
 //import process = require("process");
 
 export interface Command {
-  canHandle(commandName: string): boolean;
   execute(env: env.Environment, argumentList: Array<string>): any;
 }
 
 export class Ls implements Command {
-  canHandle(commandName: string) {
+  static canHandle(commandName: string) {
     return commandName === 'ls';
   }
 
@@ -34,7 +33,7 @@ export class Ls implements Command {
 }
 
 export class Pwd implements Command {
-  canHandle(commandName: string) {
+  static canHandle(commandName: string) {
     return commandName === 'pwd';
   }
   execute(environment: env.Environment, argumentList: Array<string>){
@@ -43,7 +42,7 @@ export class Pwd implements Command {
 }
 
 export class Cd implements Command {
-  canHandle(commandName: string) {
+  static canHandle(commandName: string) {
     return commandName === 'cd';
   }
 
@@ -78,7 +77,7 @@ export class Cd implements Command {
 }
 
 export class Exit implements Command {
-  canHandle(commandName: string) {
+  static canHandle(commandName: string) {
     return commandName === 'exit';
   }
 
