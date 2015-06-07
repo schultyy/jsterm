@@ -11,9 +11,6 @@
     "node/node.d.ts": {
       "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
     },
-    "backbone/backbone.d.ts": {
-      "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
-    },
     "github-electron/github-electron.d.ts": {
       "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
     },
