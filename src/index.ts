@@ -33,7 +33,7 @@ app.on('ready', function () {
 	});
 	shell = new shellModule.ShellModel(getUserHome());
 	shell.registerCallback();
-	mainWindow.openDevTools();
+	//mainWindow.openDevTools();
 	mainWindow.loadUrl(`file://${__dirname}/../static/index.html`);
 
 	mainWindow.on('closed', function () {
