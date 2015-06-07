@@ -6,30 +6,45 @@ import env = require("./environment");
 //import process = require("process");
 
 export interface Command {
-  canHandle(commandName: string): boolean;
-  execute(env: env.Environment, argumentList: Array<string>): any;
+  execute(env: env.Environment, argumentList: Array<string>, finished: (env: env.Environment)=>void): void;
 }
 
-export class NullCommand implements Command {
-  canHandle(commandName: string) {
-    return false;
-  }
-  execute(env: env.Environment, argumentList: Array<string>){
-
+export class BaseCommand {
+  stdout: (data: any) => void;
+  stderr: (data: any) => void;
+  constructor(stdout: (data: string) => void,
+  stderr: (data: string) => void){
+    this.stdout = stdout;
+    this.stderr = stderr;
   }
 }
 
-export class Ls implements Command {
-  canHandle(commandName: string) {
+export class Ls extends BaseCommand implements Command {
+  static canHandle(commandName: string) {
     return commandName === 'ls';
   }
 
-  execute(env: env.Environment, argumentList: Array<string>) {
+  execute(env: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
     var files = fs.readdirSync(env.workingDirectory);
-    if(argumentList.indexOf('-a') == -1) {
-      return this.filterHiddenFiles(files);
-    }
-    return files;
+    fs.readdir(env.workingDirectory, (err, files) => {
+      if(err) {
+        this.stderr(err.message);
+        return;
+      }
+      if(argumentList.indexOf('-a') == -1) {
+        this.filterHiddenFiles(files).forEach((file) => {
+          if(file === null) return;
+          this.stdout(file.toString());
+        });
+      }
+      else {
+        files.forEach((file) => {
+          this.stdout(file.toString());
+        });
+      }
+
+      finished(env);
+    });
   }
 
   private filterHiddenFiles(files: Array<string>) {
@@ -42,36 +57,41 @@ export class Ls implements Command {
   }
 }
 
-export class Pwd implements Command {
-  canHandle(commandName: string) {
+export class Pwd extends BaseCommand implements Command {
+  static canHandle(commandName: string) {
     return commandName === 'pwd';
   }
-  execute(environment: env.Environment, argumentList: Array<string>){
-    return environment.workingDirectory;
+  execute(environment: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void){
+    this.stdout(environment.workingDirectory);
+    finished(environment);
   }
 }
 
-export class Cd implements Command {
-  canHandle(commandName: string) {
+export class Cd extends BaseCommand implements Command {
+  static canHandle(commandName: string) {
     return commandName === 'cd';
   }
 
-  execute(environment: env.Environment, argumentList: Array<string>) {
+  execute(environment: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
     if(argumentList.length === 0) {
-      return environment;
+      finished(environment);
+      return;
     }
     var newFolder = argumentList[0];
     if(newFolder === "..") {
-      return this.navigateBack(environment);
+      finished(this.navigateBack(environment));
+      return;
     }
     var newPath = path.join(environment.workingDirectory, newFolder);
     if(fs.existsSync(newPath)){
-      return new env.Environment(newPath);
+      finished(new env.Environment(newPath));
     }
     else if(fs.existsSync(newFolder)) {
-      return new env.Environment(newFolder);
+      finished(new env.Environment(newFolder));
     }
-    return environment;
+    else {
+      finished(environment);
+    }
   }
 
   private navigateBack(environment: env.Environment) {
@@ -86,12 +106,12 @@ export class Cd implements Command {
   }
 }
 
-export class Exit implements Command {
-  canHandle(commandName: string) {
+export class Exit extends BaseCommand implements Command {
+  static canHandle(commandName: string) {
     return commandName === 'exit';
   }
 
-  execute(environment: env.Environment, argumentList: Array<string>) {
+  execute(environment: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
     process.exit();
   }
 }

@@ -9,15 +9,15 @@ import parser = require('./commandparser');
 import syscommand = require('./system_command');
 
 export class ShellModel {
-  commands: Array<command.Command>;
+  commands: Array<any>;
   env: environment.Environment;
   constructor(workingDirectory: string) {
     this.env = new environment.Environment(workingDirectory);
-    this.commands = new Array<command.Command>();
-    this.commands.push(new command.Ls());
-    this.commands.push(new command.Pwd());
-    this.commands.push(new command.Cd());
-    this.commands.push(new command.Exit());
+    this.commands = new Array<any>();
+    this.commands.push(command.Ls);
+    this.commands.push(command.Pwd);
+    this.commands.push(command.Cd);
+    this.commands.push(command.Exit);
   }
   registerCallback() {
     ipc.on("execute-command", (event: any, arg: string) => { this.execute(event, arg); });
@@ -25,24 +25,26 @@ export class ShellModel {
   execute(event: any, arg: string) {
     var parsedCommand = parser.parse(arg);
     var commandName = parsedCommand.shift();
-    var cmd = this.resolve(commandName);
-    if(cmd === null) {
+    var cmdClass = this.resolve(commandName);
+    var stdout = function(data: string){
+      event.sender.send('command-results', data.toString());
+    };
+    var stderr = function(data: string) {
+      event.sender.send('command-results', data.toString());
+    };
+    if(cmdClass === null) {
       syscommand.execute(commandName, parsedCommand, this.env, {
-        stdout: function(data: string) {
-          event.sender.send('command-results', data.toString());
-        },stderr: function(data: string) {
-          event.sender.send('command-results', data.toString());
-        }
+        stdout: stdout,
+        stderr: stderr
       });
     } else {
-      var results = <environment.Environment> cmd.execute(this.env, parsedCommand);
-      if(results.workingDirectory) {
-        this.env = results;
-      }
-      event.sender.send('command-results', results);
+      var cmd = new cmdClass(stdout, stderr);
+      cmd.execute(this.env, parsedCommand, (workingDirectory) =>{
+        this.env = workingDirectory;
+      });
     }
   }
-  resolve(cmdName: string): command.Command {
+  resolve(cmdName: string) {
     for(var i = 0; i < this.commands.length; i++) {
       if(this.commands[i].canHandle(cmdName)){
         return this.commands[i];
