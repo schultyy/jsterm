@@ -10,18 +10,14 @@ function sendCommand(ev: KeyboardEvent) {
   var command = $('.command').val();
   if(ev.keyCode == 13 && command !== '') {
     $(".command").val('').focus();
-    historyEntry(command);
+    historyEntry("$ " + command);
     window.ipc.send('execute-command', command);
     scrollToBottom();
   }
 }
 
 function initialize() : void {
-  var commandInput = $("<input>");
-  commandInput.addClass("command");
-  commandInput.keydown(sendCommand);
-  $("#terminal").append(commandInput);
-  commandInput.focus();
+  $(".command").keydown(sendCommand).focus();
 }
 
 function historyEntry(arg: any) {

@@ -13,12 +13,18 @@
 }
 
 .command {
-	width: 100%;
+	width: 95%;
 	margin: 0;
 	padding: 0;
 	border: 0px;
 	font-family: "Courier";
 }
+
+#command-input {}
+#command-input .shell {
+	width: 5%;
+}
+
 
 .command input {
 	border: none;
