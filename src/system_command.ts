@@ -20,6 +20,7 @@ export function execute(command: string, options: Array<string>,
     }
     if(callbacks.stderr) {
       process.stderr.on('data', callbacks.stderr);
+      process.on('error', callbacks.stderr);
     }
     if(callbacks.close) {
       process.on('close', callbacks.close);
