@@ -3,7 +3,7 @@
 import fs = require('fs');
 import path = require('path');
 import env = require("./environment");
-//import process = require("process");
+var Promise = require("promise");
 
 export interface Command {
   execute(env: env.Environment, argumentList: Array<string>, finished: (env: env.Environment)=>void): void;
@@ -25,10 +25,10 @@ export class Ls extends BaseCommand implements Command {
   }
 
   execute(env: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
-    var files = fs.readdirSync(env.workingDirectory);
-    fs.readdir(env.workingDirectory, (err, files) => {
-      if(err) {
-        this.stderr(err.message);
+    var readdir = Promise.denodeify(fs.readdir);
+    readdir(env.workingDirectory).done((files, error) => {
+      if(error) {
+        this.stderr(error.message);
         return;
       }
       if(argumentList.indexOf('-a') == -1) {
@@ -79,26 +79,48 @@ export class Cd extends BaseCommand implements Command {
     }
     var newFolder = argumentList[0];
     if(newFolder === "..") {
-      finished(this.navigateBack(environment));
+      this.navigateBack(environment).then((env)=>{
+        finished(env);
+      });
       return;
     }
     var newPath = path.join(environment.workingDirectory, newFolder);
-    if(fs.existsSync(newPath)){
-      finished(new env.Environment(newPath));
-    }
-    else if(fs.existsSync(newFolder)) {
-      finished(new env.Environment(newFolder));
-    }
-    else {
-      finished(environment);
-    }
+    var fsExists = Promise.denodeify(fs.exists);
+    new Promise(function(resolve, reject){
+      fs.exists(newPath, (exists)=>{
+        resolve(exists);
+      });
+    }).then((exists) => {
+      if(exists) {
+        finished(new env.Environment(newPath));
+        return;
+      }
+
+      new Promise(function(resolve, reject){
+        fs.exists(newFolder, (exists)=>{
+          resolve(exists);
+        });
+      }).then((exists) => {
+        if(exists) {
+          finished(new env.Environment(newFolder));
+        } else {
+          finished(environment);
+        }
+      });
+    });
   }
 
   private navigateBack(environment: env.Environment) {
     var newPath = this.pathByRemovingLastComponent(environment.workingDirectory);
-    if(fs.existsSync(newPath)){
-      return new env.Environment(newPath);
-    }
+    return new Promise(function(resolve, reject) {
+      fs.exists(newPath, (exists) => {
+        if(exists) {
+          resolve(new env.Environment(newPath));
+        } else {
+          resolve(environment);
+        }
+      });
+    });
   }
 
   private pathByRemovingLastComponent(path: string): string {
