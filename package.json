@@ -33,11 +33,11 @@
     "electron-prebuilt": "^0.25.2",
     "grunt": "^0.4.5",
     "grunt-ts": "^4.1",
-    "promise": "^7.0.1",
     "tsd": "^0.6.0",
     "typescript": "^1.4"
   },
   "dependencies": {
+    "promise": "^7.0.1",
     "bootstrap": "^3.3.4",
     "jquery": "^2.1.4",
     "requirejs": "^2.1.17",
