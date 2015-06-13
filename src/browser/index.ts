@@ -8,7 +8,7 @@ window.ipc = require('ipc');
 
 function sendCommand(ev: KeyboardEvent) {
   var command = $('.command').val();
-  if(ev.keyCode == 13 && command !== '') {
+  if(ev.keyCode == 13) {
     $(".command").val('').focus();
     historyEntry("$ " + command);
     window.ipc.send('execute-command', command);
