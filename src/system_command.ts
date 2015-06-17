@@ -1,6 +1,8 @@
 ///<reference path="../typings/node/node.d.ts" />
 /// <reference path="./environment"/>
 
+'use strict';
+
 import child_process = require("child_process");
 import environment = require("./environment");
 
@@ -12,6 +14,9 @@ export interface Callbacks {
 
 export function execute(command: string, options: Array<string>,
                         env: environment.Environment, callbacks: Callbacks) {
+    if(command === null || command === undefined || command === '') {
+      return;
+    }
     var process = child_process.spawn(command, options, {
       cwd: env.workingDirectory
     });

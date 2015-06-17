@@ -28,6 +28,10 @@ body {
 	font-family: "Courier";
 }
 
+.shell {
+	margin-left: 5px;
+}
+
 #command-input {}
 #command-input .shell {
 	width: 5%;
