@@ -44,10 +44,24 @@ function scrollToBottom() {
   $('html, body').animate({scrollTop: $(".command").offset().top}, 0);
 }
 
-function menu() {
+function modifier(platform: string) {
+  if(platform === 'darwin') {
+    return function(shortcut: string) {
+      return 'Command' + '+' + shortcut;
+    }
+  }
+  else {
+    return function(shortcut: string) {
+      return 'Ctrl' + '+' + shortcut;
+    }
+  }
+}
+
+function buildMenu(platform: string) {
   var remote = require('remote');
   var Menu = remote.require('menu');
   var MenuItem = remote.require('menu-item');
+  var osModifier = modifier(platform);
 
   var template = [
     {
@@ -61,32 +75,8 @@ function menu() {
           type: 'separator'
         },
         {
-          label: 'Services',
-          submenu: []
-        },
-        {
-          type: 'separator'
-        },
-        {
-          label: 'Hide Electron',
-          accelerator: 'Command+H',
-          selector: 'hide:'
-        },
-        {
-          label: 'Hide Others',
-          accelerator: 'Command+Shift+H',
-          selector: 'hideOtherApplications:'
-        },
-        {
-          label: 'Show All',
-          selector: 'unhideAllApplications:'
-        },
-        {
-          type: 'separator'
-        },
-        {
           label: 'Quit',
-          accelerator: 'Command+Q',
+          accelerator: osModifier('Q'),
           selector: 'terminate:'
         },
       ]
@@ -95,37 +85,19 @@ function menu() {
       label: 'Edit',
       submenu: [
         {
-          label: 'Undo',
-          accelerator: 'Command+Z',
-          selector: 'undo:'
-        },
-        {
-          label: 'Redo',
-          accelerator: 'Shift+Command+Z',
-          selector: 'redo:'
-        },
-        {
-          type: 'separator'
-        },
-        {
           label: 'Cut',
-          accelerator: 'Command+X',
+          accelerator: osModifier('X'),
           selector: 'cut:'
         },
         {
           label: 'Copy',
-          accelerator: 'Command+C',
+          accelerator: osModifier('C'),
           selector: 'copy:'
         },
         {
           label: 'Paste',
-          accelerator: 'Command+V',
+          accelerator: osModifier('V'),
           selector: 'paste:'
-        },
-        {
-          label: 'Select All',
-          accelerator: 'Command+A',
-          selector: 'selectAll:'
         }
       ]
     }
@@ -136,11 +108,16 @@ function menu() {
   Menu.setApplicationMenu(menu);
 }
 
+function platform() {
+  window.ipc.send('platform');
+  window.ipc.on('platform', buildMenu);
+}
+
 $(() => {
   initialize();
   registerCallbacks();
   $('#history').click(function(){
     $(".command").focus();
   });
-  menu();
+  platform();
 });

@@ -6,6 +6,7 @@ var app = require('app');
 var BrowserWindow = require('browser-window');
 var ipc = require("ipc");
 var process = require("process");
+import os = require("os");
 import shellModule = require("./shellModel");
 
 function getUserHome(): string {
@@ -23,6 +24,10 @@ app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
+});
+
+ipc.on('platform', function(event, arg) {
+  event.sender.send('platform', os.platform());
 });
 
 app.on('ready', function () {
