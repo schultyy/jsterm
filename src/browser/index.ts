@@ -7,7 +7,7 @@ window.$ = require("jquery");
 window.ipc = require('ipc');
 
 function sendCommand(ev: KeyboardEvent) {
-  var command = $('.command').val();
+  var command = $('.command').val().trim();
   if(ev.keyCode == 13) {
     $(".command").val('').focus();
     historyEntry("$ " + command);
