@@ -44,10 +44,80 @@ function scrollToBottom() {
   $('html, body').animate({scrollTop: $(".command").offset().top}, 0);
 }
 
+function modifier(platform: string) {
+  if(platform === 'darwin') {
+    return function(shortcut: string) {
+      return 'Command' + '+' + shortcut;
+    }
+  }
+  else {
+    return function(shortcut: string) {
+      return 'Ctrl' + '+' + shortcut;
+    }
+  }
+}
+
+function buildMenu(platform: string) {
+  var remote = require('remote');
+  var Menu = remote.require('menu');
+  var MenuItem = remote.require('menu-item');
+  var osModifier = modifier(platform);
+
+  var template = [
+    {
+      label: 'Electron',
+      submenu: [
+        {
+          label: 'About Electron',
+          selector: 'orderFrontStandardAboutPanel:'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Quit',
+          accelerator: osModifier('Q'),
+          selector: 'terminate:'
+        },
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        {
+          label: 'Cut',
+          accelerator: osModifier('X'),
+          selector: 'cut:'
+        },
+        {
+          label: 'Copy',
+          accelerator: osModifier('C'),
+          selector: 'copy:'
+        },
+        {
+          label: 'Paste',
+          accelerator: osModifier('V'),
+          selector: 'paste:'
+        }
+      ]
+    }
+  ];
+
+  var menu = Menu.buildFromTemplate(template);
+
+  Menu.setApplicationMenu(menu);
+}
+
+function platform() {
+  window.ipc.send('platform');
+  window.ipc.on('platform', buildMenu);
+}
+
 $(() => {
   initialize();
   registerCallbacks();
   $('#history').click(function(){
     $(".command").focus();
   });
+  platform();
 });
