@@ -32,15 +32,23 @@ export class ShellModel {
     var stderr = function(data: string) {
       event.sender.send('command-results', data.toString());
     };
+    var close = function(code: number, signal: any) {
+      event.sender.send('command-exit', {
+        code: code,
+        signal: signal
+      });
+    }
     if(cmdClass === null) {
       syscommand.execute(commandName, parsedCommand, this.env, {
         stdout: stdout,
-        stderr: stderr
+        stderr: stderr,
+        close: close
       });
     } else {
       var cmd = new cmdClass(stdout, stderr);
       cmd.execute(this.env, parsedCommand, (workingDirectory) =>{
         this.env = workingDirectory;
+        close(0, null);
       });
     }
   }

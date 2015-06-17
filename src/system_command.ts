@@ -9,7 +9,7 @@ import environment = require("./environment");
 export interface Callbacks {
   stdout?: (data: string) => void;
   stderr?: (data: string) => void;
-  close?: (data: string) => void;
+  close?: (code: number, signal: any) => void;
 }
 
 export function execute(command: string, options: Array<string>,
