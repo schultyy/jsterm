@@ -13,6 +13,7 @@ function sendCommand(ev: KeyboardEvent) {
     historyEntry("$ " + command);
     window.ipc.send('execute-command', command);
     scrollToBottom();
+    $("#command-input").hide();
   }
 }
 
@@ -37,6 +38,11 @@ function registerCallbacks() : void {
         historyEntry(arg);
       }
       scrollToBottom();
+    });
+    window.ipc.on('command-exit', (code: number, signal: any) => {
+      $('#command-input').show();
+      scrollToBottom();
+      $('#command-input .command').focus();
     });
 }
 
