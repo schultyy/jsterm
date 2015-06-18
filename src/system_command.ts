@@ -15,6 +15,7 @@ export interface Callbacks {
 export function execute(command: string, options: Array<string>,
                         env: environment.Environment, callbacks: Callbacks) {
     if(command === null || command === undefined || command === '') {
+      callbacks.close(0, null);
       return;
     }
     var process = child_process.spawn(command, options, {
