@@ -18,6 +18,7 @@ export class ShellModel {
     this.commands.push(command.Pwd);
     this.commands.push(command.Cd);
     this.commands.push(command.Exit);
+    this.commands.push(command.Tail);
   }
   registerCallback() {
     ipc.on("execute-command", (event: any, arg: string) => { this.execute(event, arg); });
