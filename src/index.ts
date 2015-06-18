@@ -29,6 +29,12 @@ ipc.on('platform', function(event, arg) {
   event.sender.send('platform', os.platform());
 });
 
+ipc.on('load-configuration', function(event, arg) {
+  userConfig.loadConfiguration().then((config) => {
+    event.sender.send('user-configuration', config);
+  });
+});
+
 app.on('ready', function () {
 	mainWindow = new BrowserWindow({
 		width: 1024,
@@ -36,13 +42,9 @@ app.on('ready', function () {
 		resizable: true
 	});
 
-  userConfig.loadConfiguration().then((config) => {
-    console.log(config);
-  });
-
 	shell = new shellModule.ShellModel(utils.getUserHome());
 	shell.registerCallback();
-	//mainWindow.openDevTools();
+	// mainWindow.openDevTools();
 	mainWindow.loadUrl(`file://${__dirname}/../static/index.html`);
 
 	mainWindow.on('closed', function () {

@@ -119,6 +119,16 @@ function platform() {
   window.ipc.on('platform', buildMenu);
 }
 
+function fetchSettings() {
+  window.ipc.send('load-configuration');
+  window.ipc.on('user-configuration', (configuration) => {
+    console.log(configuration);
+    $('*').css('font-size', configuration.fontsize + 'px');
+    $('*').css('color', configuration.fontColor);
+    $('*').css('background-color', configuration.backgroundColor);
+  });
+}
+
 $(() => {
   initialize();
   registerCallbacks();
@@ -126,4 +136,5 @@ $(() => {
     $(".command").focus();
   });
   platform();
+  fetchSettings();
 });

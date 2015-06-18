@@ -7,9 +7,12 @@
 }
 
 body {
-	background-color: #321456;
 	margin: 0px;
 	padding: 0px;
+}
+
+#history{
+	background: transparent;
 }
 
 #terminal {
