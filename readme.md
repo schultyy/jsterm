@@ -47,7 +47,7 @@ You can configure the following properties:
 
 ```json
 {
-  "font-family": "Courier",
+  "fontFamily": "Courier",
   "fontsize": 20,
   "fontColor": "#FFFFFF",
   "backgroundColor": "#45036F"
