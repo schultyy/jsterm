@@ -27,7 +27,7 @@ $ npm install -g grunt-cli
 $ npm start
 ```
 
-This compiles all Typescript files and starts jsterm. 
+This compiles all Typescript files and starts jsterm.
 
 ### Build
 
@@ -35,6 +35,24 @@ This compiles all Typescript files and starts jsterm.
 $ npm run build
 ```
 
+### Configuration
+
+jsterm looks by default for `~/.jstermrc`. This file allows you to override parameters with custom values.
+
+You can configure the following properties:
+- fontColor
+- fontsize
+- backgroundColor
+- fontFamily
+
+```json
+{
+  "font-family": "Courier",
+  "fontsize": 20,
+  "fontColor": "#FFFFFF",
+  "backgroundColor": "#45036F"
+}
+```
 
 ## License
 
