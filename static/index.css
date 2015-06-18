@@ -2,6 +2,7 @@
 	background-color: transparent;
 	margin: 0px;
 	padding: 0px;
+	font-family: "courier";
 }
 
 body {
@@ -18,7 +19,6 @@ body {
 
 #terminal {
 	width: 100%;
-	font-family: "courier";
 }
 
 #terminal ul {
@@ -29,7 +29,6 @@ body {
 	margin: 5px;
 	width: 95%;
 	border: 0px;
-	font-family: "Courier";
 }
 
 .shell {

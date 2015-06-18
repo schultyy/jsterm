@@ -8,12 +8,14 @@ export class UserConfiguration {
   fontColor: string;
   fontsize: number;
   backgroundColor: string;
+  fontFamily: string;
 
   constructor(args?: any) {
     if(args) {
       this.fontsize = args.fontsize;
       this.fontColor = args.fontColor;
       this.backgroundColor = args.backgroundColor;
+      this.fontFamily = args.fontFamily;
     } else {
       this.defaults();
     }
@@ -23,6 +25,7 @@ export class UserConfiguration {
     this.backgroundColor = "#0B1D2E";
     this.fontColor = "#FCFDF2";
     this.fontsize = 19;
+    this.fontFamily = 'courier';
   }
 }
 

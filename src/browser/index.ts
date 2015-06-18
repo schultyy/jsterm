@@ -126,6 +126,7 @@ function fetchSettings() {
     $('*').css('font-size', configuration.fontsize + 'px');
     $('*').css('color', configuration.fontColor);
     $('*').css('background-color', configuration.backgroundColor);
+    $('*').css('font-family', configuration.fontFamily);
   });
 }
 
