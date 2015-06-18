@@ -1,7 +1,5 @@
 * {
-	font-size: 16px;
-	color: #8180B2;
-	background-color: #321456;
+	background-color: transparent;
 	margin: 0px;
 	padding: 0px;
 }
@@ -9,6 +7,9 @@
 body {
 	margin: 0px;
 	padding: 0px;
+	color: #8180B2;
+	background-color: #321456;
+	font-size: 16px;
 }
 
 #history{

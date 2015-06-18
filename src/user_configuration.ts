@@ -22,7 +22,7 @@ export class UserConfiguration {
   private defaults() {
     this.backgroundColor = "#0B1D2E";
     this.fontColor = "#FCFDF2";
-    this.fontsize = 12;
+    this.fontsize = 19;
   }
 }
 
