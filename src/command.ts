@@ -154,7 +154,7 @@ export class Tail extends BaseCommand implements Command {
       }
     })
     .then((contents)=>{
-      return Promise.resolve(this.takeLines(contents, 10));
+      return Promise.resolve(this.takeLines(contents, this.lineCount(argumentList)));
     })
     .then((lines) => {
       lines.forEach((line) => this.stdout(line));
@@ -164,6 +164,14 @@ export class Tail extends BaseCommand implements Command {
     }).done(()=>{
       finished(environment);
     });
+  }
+
+  private lineCount(argumentList: Array<string>) {
+    var indexCount = argumentList.indexOf("-n");
+    if(indexCount === -1) {
+      return 10;
+    }
+    return parseInt(argumentList[indexCount + 1]);
   }
 
   private takeLines(content: string, count: number) {
