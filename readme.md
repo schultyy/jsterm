@@ -3,7 +3,7 @@
 This provides basic Terminal operations in a terminal app written in Typescript. It uses Atom's electron to provide a basic graphical user interface.
 
 
-## Dev
+## Development
 
 ```
 $ npm install
@@ -12,7 +12,13 @@ $ npm install
 You also need `tsd`:
 
 ```
-$ npm install tsd
+$ npm install -g tsd
+```
+
+Also `grunt-cli` installed with `-g` switch:
+
+```
+$ npm install -g grunt-cli
 ```
 
 ### Run
@@ -20,6 +26,8 @@ $ npm install tsd
 ```
 $ npm start
 ```
+
+This compiles all Typescript files and starts jsterm. 
 
 ### Build
 
