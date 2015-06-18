@@ -6,12 +6,11 @@ var app = require('app');
 var BrowserWindow = require('browser-window');
 var ipc = require("ipc");
 var process = require("process");
+var Promise = require("promise");
 import os = require("os");
 import shellModule = require("./shellModel");
-
-function getUserHome(): string {
-  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
-}
+import userConfig = require("./user_configuration");
+import utils = require('./utils');
 
 // report crashes to the Electron project
 require('crash-reporter').start();
@@ -36,7 +35,12 @@ app.on('ready', function () {
 		height: 768,
 		resizable: true
 	});
-	shell = new shellModule.ShellModel(getUserHome());
+
+  userConfig.loadConfiguration().then((config) => {
+    console.log(config);
+  });
+
+	shell = new shellModule.ShellModel(utils.getUserHome());
 	shell.registerCallback();
 	//mainWindow.openDevTools();
 	mainWindow.loadUrl(`file://${__dirname}/../static/index.html`);
