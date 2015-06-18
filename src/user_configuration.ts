@@ -10,15 +10,12 @@ export class UserConfiguration {
   backgroundColor: string;
   fontFamily: string;
 
-  constructor(args?: any) {
-    if(args) {
-      this.fontsize = args.fontsize;
-      this.fontColor = args.fontColor;
-      this.backgroundColor = args.backgroundColor;
-      this.fontFamily = args.fontFamily;
-    } else {
-      this.defaults();
-    }
+  constructor(args: any = {}) {
+    this.defaults();
+    this.fontsize = args.fontsize || this.fontsize;
+    this.fontColor = args.fontColor || this.fontColor;
+    this.backgroundColor = args.backgroundColor || this.backgroundColor;
+    this.fontFamily = args.fontFamily || this.fontFamily;
   }
 
   private defaults() {
