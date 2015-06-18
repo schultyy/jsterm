@@ -137,3 +137,70 @@ export class Exit extends BaseCommand implements Command {
     process.exit();
   }
 }
+
+export class Tail extends BaseCommand implements Command {
+  static canHandle(commandName: string) {
+    return commandName === 'tail';
+  }
+
+  execute(environment: env.Environment, argumentList: Array<string>, finished: (env: env.Environment) => void) {
+    var fileName = argumentList.pop();
+
+    var lines = this.statFile(fileName).then((stats: fs.Stats) => {
+      if(stats.isFile()) {
+        return this.readLines(fileName);
+      } else {
+        throw "Invalid argument " + fileName;
+      }
+    })
+    .then((contents)=>{
+      return Promise.resolve(this.takeLines(contents, this.lineCount(argumentList)));
+    })
+    .then((lines) => {
+      lines.forEach((line) => this.stdout(line));
+    })
+    .catch((err) => {
+      this.stderr(err);
+    }).done(()=>{
+      finished(environment);
+    });
+  }
+
+  private lineCount(argumentList: Array<string>) {
+    var indexCount = argumentList.indexOf("-n");
+    if(indexCount === -1) {
+      return 10;
+    }
+    return parseInt(argumentList[indexCount + 1]);
+  }
+
+  private takeLines(content: string, count: number) {
+    var lines = content.split("\n");
+    if(lines.length === 0 || lines.length <= count) {
+      return lines;
+    }
+    return lines.slice(lines.length - count);
+  }
+
+  private readLines(filename: string) {
+    return new Promise(function(resolve, reject) {
+      fs.readFile(filename, (err, content) => {
+        if(err)
+          reject(err);
+        else
+          resolve(content.toString());
+      });
+    });
+  }
+
+  private statFile(fileName: string) {
+    return new Promise(function(resolve, reject){
+      fs.stat(fileName, (err, stats)=>{
+        if(err)
+          reject(err);
+        else
+          resolve(stats);
+      });
+    });
+  }
+}
