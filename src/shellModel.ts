@@ -32,6 +32,9 @@ export class ShellModel {
     ipc.on("last-command", (event: any, arg: string) => {
       event.sender.send('last-history-command', this.history.lastCommand());
     });
+    ipc.on("next-command", (event: any, arg: string) => {
+      event.sender.send('next-history-command', this.history.nextCommand());
+    });
   }
   execute(event: any, arg: string) {
     var parsedCommand = parser.parse(arg);

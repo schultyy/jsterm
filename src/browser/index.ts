@@ -20,6 +20,7 @@ function sendCommand(ev: KeyboardEvent) {
       window.ipc.send('last-command');
       break;
     case 40: //down
+      window.ipc.send('next-command');
       break;
   }
 }
@@ -27,6 +28,9 @@ function sendCommand(ev: KeyboardEvent) {
 function initialize() : void {
   $(".command").keydown(sendCommand).focus();
   window.ipc.on('last-history-command', (command: string) => {
+    $(".command").val(command);
+  });
+  window.ipc.on('next-history-command', (command: string) => {
     $(".command").val(command);
   });
 }

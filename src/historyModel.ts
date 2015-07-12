@@ -17,4 +17,10 @@ export class HistoryModel {
     }
     return this.executedCommands[this.commandPointer];
   }
+  nextCommand() {
+    if(this.commandPointer + 1 < this.executedCommands.length) {
+      return this.executedCommands[this.commandPointer++];
+    }
+    return this.executedCommands[this.commandPointer];
+  }
 }
