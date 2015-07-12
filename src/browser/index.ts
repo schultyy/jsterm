@@ -8,17 +8,31 @@ window.ipc = require('ipc');
 
 function sendCommand(ev: KeyboardEvent) {
   var command = $('.command').val().trim();
-  if(ev.keyCode == 13) {
-    $(".command").val('').focus();
-    historyEntry("$ " + command);
-    window.ipc.send('execute-command', command);
-    scrollToBottom();
-    $("#command-input").hide();
+  switch(ev.keyCode) {
+    case 13: //return
+      $(".command").val('').focus();
+      historyEntry("$ " + command);
+      window.ipc.send('execute-command', command);
+      scrollToBottom();
+      $("#command-input").hide();
+      break;
+    case 38: //up
+      window.ipc.send('last-command');
+      break;
+    case 40: //down
+      window.ipc.send('next-command');
+      break;
   }
 }
 
 function initialize() : void {
   $(".command").keydown(sendCommand).focus();
+  window.ipc.on('last-history-command', (command: string) => {
+    $(".command").val(command);
+  });
+  window.ipc.on('next-history-command', (command: string) => {
+    $(".command").val(command);
+  });
 }
 
 function historyEntry(arg: any) {

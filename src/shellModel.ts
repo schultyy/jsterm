@@ -7,13 +7,17 @@ import command = require("./command");
 import environment = require("./environment");
 import parser = require('./commandparser');
 import syscommand = require('./system_command');
+import history = require('./historyModel');
 
 export class ShellModel {
   commands: Array<any>;
   env: environment.Environment;
+  history: history.HistoryModel;
+
   constructor(workingDirectory: string) {
     this.env = new environment.Environment(workingDirectory);
     this.commands = new Array<any>();
+    this.history = new history.HistoryModel();
     this.commands.push(command.Ls);
     this.commands.push(command.Pwd);
     this.commands.push(command.Cd);
@@ -21,7 +25,16 @@ export class ShellModel {
     this.commands.push(command.Tail);
   }
   registerCallback() {
-    ipc.on("execute-command", (event: any, arg: string) => { this.execute(event, arg); });
+    ipc.on("execute-command", (event: any, arg: string) => {
+      this.execute(event, arg);
+      this.history.addCommand(arg);
+    });
+    ipc.on("last-command", (event: any, arg: string) => {
+      event.sender.send('last-history-command', this.history.lastCommand());
+    });
+    ipc.on("next-command", (event: any, arg: string) => {
+      event.sender.send('next-history-command', this.history.nextCommand());
+    });
   }
   execute(event: any, arg: string) {
     var parsedCommand = parser.parse(arg);
