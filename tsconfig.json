@@ -19,6 +19,7 @@
         "./src/command.ts",
         "./src/commandparser.ts",
         "./src/environment.ts",
+        "./src/historyModel.ts",
         "./src/index.ts",
         "./src/shellModel.ts",
         "./src/system_command.ts",
