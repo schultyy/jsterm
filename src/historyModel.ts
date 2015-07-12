@@ -8,6 +8,9 @@ export class HistoryModel {
     this.commandPointer = 0;
   }
   addCommand(command: string): void {
+    if(command === undefined || command === '') {
+      return;
+    }
     this.executedCommands.push(command);
     this.commandPointer = this.executedCommands.length - 1;
   }
