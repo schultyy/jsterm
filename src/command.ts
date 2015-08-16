@@ -95,6 +95,11 @@ export class Cd extends BaseCommand implements Command {
         finished(new env.Environment(newPath));
         return;
       }
+      else {
+        this.stderr("Path " + newPath + " does not exist");
+        finished(environment);
+        return;
+      }
 
       new Promise(function(resolve, reject){
         fs.exists(newFolder, (exists)=>{
